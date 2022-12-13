@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+    app:
+        container_name: rentx-container
+        build: .
+        ports:
+            - 3001:3001
+        volumes:
+            - .:/usr/app
+        depends_on:
+            - rentx-db
+        links:
+            - rentx-db
+
+    rentx-db:
+        container_name: rentx-db-container
+        image: postgres
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_PASSWORD: docker
+            POSTGRES_USER: docker
+            POSTGRES_DB: rentx
+        volumes:
+            - rentx-db:/var/lib/postgresql/data
+volumes:
+    rentx-db:
+    app:
