@@ -1,9 +1,37 @@
 import { Cars } from '@prisma/client';
-import {ICarsRepository, ICreateCarDTO} from  '../../ICarsRepository'
+import {ICarsRepository, ICreateCarDTO, IFindDTO} from  '../../ICarsRepository'
 import prisma from '../../../../../services/database/prismaClient';
 
 
 class CarPostgresRepository implements ICarsRepository {
+  findAvailable({ category_id, name, brand }: IFindDTO): Promise<Cars[] | null> {
+   const cars = prisma.cars.findMany({
+    where: {
+      available: true,
+      OR: [
+        {
+          name: {
+            contains: name
+          }
+        },
+        {
+          category_id: {
+            equals: category_id
+          }
+        },
+        {
+          brand: {
+            equals: brand
+          }
+        }
+      ]
+    }
+   });
+   return cars
+  }
+
+
+
   create({ category_id, daily_rate, description, fine_amount, license_plate, name, available, brand }: ICreateCarDTO): Promise<Cars> {
    const car = prisma.cars.create({
     data: {

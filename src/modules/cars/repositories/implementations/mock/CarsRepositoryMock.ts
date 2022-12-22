@@ -1,10 +1,18 @@
 import { Cars } from "@prisma/client";
-import { ICarsRepository, ICreateCarDTO } from "../../ICarsRepository";
+import { ICarsRepository, ICreateCarDTO, IFindDTO } from "../../ICarsRepository";
 
 class CarsRepositoryMock implements ICarsRepository{
 
     
     private cars: Cars[] = [];
+    
+    async findAvailable({ brand, category_id, name}: IFindDTO): Promise<Cars[] | null> {
+        return this.cars.filter((car) => {
+            if(car.available === true || ((brand && car.brand === brand) || (category_id && car.category_id === category_id) || (name && car.name === name))){
+                return car;
+            }
+        });
+    }
     
     async create({ category_id, daily_rate, description, fine_amount, license_plate, name, available, brand }: ICreateCarDTO): Promise<Cars> {
         
