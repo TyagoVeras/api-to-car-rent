@@ -3,6 +3,16 @@ import prisma from '../../../../../services/database/prismaClient';
 import { ISpecificationRepository, ICreateSpecificationDTO } from '../../ISpecificationRepository';
 
 class SpecificationsPostgresRepository implements ISpecificationRepository {
+  async findByIds(ids: string[]): Promise<Specification[] | null> {
+    return await prisma.specification.findMany({
+      where: {
+        id: {
+          in: ids
+        }
+      }
+    })
+  }
+  
   async findByName(name: string): Promise<Specification | null> {
     const result = await prisma.specification.findFirst({
       where: {

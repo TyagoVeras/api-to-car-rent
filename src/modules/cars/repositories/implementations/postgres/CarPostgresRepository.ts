@@ -4,6 +4,17 @@ import prisma from '../../../../../services/database/prismaClient';
 
 
 class CarPostgresRepository implements ICarsRepository {
+  async findById(id: string): Promise<Cars | null> {
+    return await prisma.cars.findFirst({
+      where: {
+        CarsSpecifications: {
+          every: {
+            specification_id: id
+          }
+        }
+      }
+    })
+  }
   findAvailable({ category_id, name, brand }: IFindDTO): Promise<Cars[] | null> {
    const cars = prisma.cars.findMany({
     where: {
@@ -32,7 +43,7 @@ class CarPostgresRepository implements ICarsRepository {
 
 
 
-  create({ category_id, daily_rate, description, fine_amount, license_plate, name, available, brand }: ICreateCarDTO): Promise<Cars> {
+  create({ category_id, daily_rate, description, fine_amount, license_plate, name, available, brand, specifications }: ICreateCarDTO): Promise<Cars> {
    const car = prisma.cars.create({
     data: {
       category_id, brand, daily_rate, description, fine_amount, license_plate, name, available

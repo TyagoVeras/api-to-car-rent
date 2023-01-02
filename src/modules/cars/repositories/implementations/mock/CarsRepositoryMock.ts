@@ -38,6 +38,10 @@ class CarsRepositoryMock implements ICarsRepository{
         const car = await this.cars.find(item => item.license_plate === licensePlate) || null;
         return car;
     }
+
+    async findById(id: string): Promise<Cars | null> {
+        return this.cars.find( car => car.id === id) || null
+    }
 }
 
 export { CarsRepositoryMock }

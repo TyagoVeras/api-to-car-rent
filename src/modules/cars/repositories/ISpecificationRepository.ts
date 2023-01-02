@@ -9,7 +9,8 @@ interface ISpecificationRepository{
 
     create({ name, description }: ICreateSpecificationDTO): Promise<Specification>;
     findByName(name: string): Promise<Specification | null>;
-    list(): Promise<Specification[] | []>
+    list(): Promise<Specification[] | []>;
+    findByIds(ids: string[]): Promise<Specification[] | null>;
 }
 
 export { ISpecificationRepository, ICreateSpecificationDTO };

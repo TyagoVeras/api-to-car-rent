@@ -1,4 +1,5 @@
 import { Cars } from "@prisma/client"
+import Specification from "../models/Specification"
 
 interface ICreateCarDTO{
     name: string
@@ -9,6 +10,7 @@ interface ICreateCarDTO{
     fine_amount: number
     brand: string
     category_id: string
+    specifications?: Specification[]
 }
 
 interface IFindDTO{
@@ -18,9 +20,10 @@ interface IFindDTO{
 }
 interface ICarsRepository{
 
-    create({ category_id, daily_rate, description, fine_amount, license_plate, name, available, brand}: ICreateCarDTO): Promise<Cars>;
+    create({ category_id, daily_rate, description, fine_amount, license_plate, name, available, brand, specifications}: ICreateCarDTO): Promise<Cars>;
     findByLicensePlate(licensePlate: string): Promise<Cars | null>;
     findAvailable({category_id, name, brand}: IFindDTO): Promise<Cars[] | null>;
+    findById(id: string): Promise<Cars | null>;
 }
 
 export { ICarsRepository, ICreateCarDTO, IFindDTO}

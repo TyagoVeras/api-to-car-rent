@@ -21,10 +21,11 @@ model Category {
 }
 
 model Specification {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  created_at  DateTime @default(now())
+  id                 String               @id @default(uuid())
+  name               String
+  description        String
+  created_at         DateTime             @default(now())
+  CarsSpecifications CarsSpecifications[]
 
   @@map("specifications")
 }
@@ -54,7 +55,19 @@ model Cars {
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
 
-  category Category @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  category           Category             @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  CarsSpecifications CarsSpecifications[]
 
   @@map("cars")
+}
+
+model CarsSpecifications {
+  car_id           String
+  specification_id String
+
+  car           Cars          @relation(fields: [car_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  specification Specification @relation(fields: [specification_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([car_id, specification_id])
+  @@map("cars_specifications")
 }
