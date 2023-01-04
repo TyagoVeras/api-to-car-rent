@@ -20,6 +20,10 @@ class Upload{
     single(path: string, nameInput: string){
        return multer(this.config(path)).single(nameInput)
     }
+
+    multiple(path: string, nameInput: string){
+        return multer(this.config(path)).array(nameInput)
+    }
 }
 
 export { Upload }

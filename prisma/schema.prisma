@@ -57,6 +57,7 @@ model Cars {
 
   category           Category             @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   CarsSpecifications CarsSpecifications[]
+  CarImages          CarImages[]
 
   @@map("cars")
 }
@@ -70,4 +71,16 @@ model CarsSpecifications {
 
   @@id([car_id, specification_id])
   @@map("cars_specifications")
+}
+
+model CarImages {
+  id         String   @id @default(uuid())
+  path       String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  car_id     String
+
+  car Cars @relation(fields: [car_id], references: [id])
+
+  @@map("car_images")
 }
