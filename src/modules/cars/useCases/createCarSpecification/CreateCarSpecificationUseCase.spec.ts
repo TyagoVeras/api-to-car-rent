@@ -39,9 +39,6 @@ describe("Create car specification", ()=>{
       license_plate: 'ABC-1234',
       available: true
     })
-    const specificationCars = await createCarSpecificationUseCase.execute({ carId: car.id, specificationsId})
-
-    console.log(specificationCars);
-    
+    const specificationCars = await createCarSpecificationUseCase.execute({ carId: car.id, specificationsId})    
   })
 })

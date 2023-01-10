@@ -31,13 +31,14 @@ model Specification {
 }
 
 model Users {
-  id             String  @id @default(uuid())
+  id             String    @id @default(uuid())
   name           String
   password       String
-  email          String  @unique
+  email          String    @unique
   driver_license String
-  isAdmin        Boolean @default(false)
+  isAdmin        Boolean   @default(false)
   avatar         String?
+  Rentals        Rentals[]
 
   @@map("users")
 }
@@ -58,6 +59,7 @@ model Cars {
   category           Category             @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   CarsSpecifications CarsSpecifications[]
   CarImages          CarImages[]
+  Rentals            Rentals[]
 
   @@map("cars")
 }
@@ -83,4 +85,22 @@ model CarImages {
   car Cars @relation(fields: [car_id], references: [id])
 
   @@map("car_images")
+}
+
+model Rentals {
+  id                   String   @id @default(uuid())
+  start_date           DateTime
+  end_date             DateTime
+  expected_return_date DateTime
+  total                Int
+  created_at           DateTime
+  updated_at           DateTime
+
+  car_id  String
+  user_id String
+
+  car  Cars  @relation(fields: [car_id], references: [id])
+  user Users @relation(fields: [user_id], references: [id])
+
+  @@map("rentals")
 }
