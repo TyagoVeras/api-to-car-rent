@@ -1,10 +1,7 @@
 import { Rentals } from "@prisma/client";
 import AppError from "../../../../shareds/appError/AppError";
 import { IRentalRepository, ICreateRentalDTO } from "../../repositories/IRentalRepository"
-import dayjs from "dayjs";
-import utc from 'dayjs/plugin/utc'
-
-dayjs.extend(utc)
+import { IDateProvider } from "../../../../shareds/container/DateProvider/IDateProvider"
 interface IRequest {
   carId: string;
   userId: string;
@@ -14,17 +11,14 @@ interface IRequest {
 class CreateRentalUseCase {
 
   constructor(
-    private rentalRepository: IRentalRepository
+    private rentalRepository: IRentalRepository,
+    private dateProvider: IDateProvider
   ){}
 
-  private convertDateToUtc = (date: Date) => dayjs(date).utc().local().format();
 
-  private compareDates =(dateInit: Date, dateEnd: Date) => {
-    return dayjs(this.convertDateToUtc(dateInit)).diff(this.convertDateToUtc(dateEnd), 'hours')
-  }
+  async execute({ carId, expectedReturnDate, userId }: IRequest): Promise<Rentals>{ 
 
-  async execute({ carId, expectedReturnDate, userId }: IRequest): Promise<Rentals>{
-
+    const minimumHour = 24;
     const carIsRented = await this.rentalRepository.findCarRentedByCar(carId);
     if(carIsRented){
       throw new AppError('Car is rented')
@@ -35,9 +29,11 @@ class CreateRentalUseCase {
       throw new AppError('User has open rent')
     }
 
-    const compare = this.compareDates(expectedReturnDate, new Date())
+    const compare = this.dateProvider.compareInHours(expectedReturnDate, new Date())
 
-    console.log(compare);
+    if(compare < minimumHour) {
+      throw new AppError('Invalid return date')
+    }    
     
     const rental = await this.rentalRepository.create({
       userId,
