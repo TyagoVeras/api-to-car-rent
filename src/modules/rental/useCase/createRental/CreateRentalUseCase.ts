@@ -2,16 +2,21 @@ import { Rentals } from "@prisma/client";
 import AppError from "../../../../shareds/appError/AppError";
 import { IRentalRepository, ICreateRentalDTO } from "../../repositories/IRentalRepository"
 import { IDateProvider } from "../../../../shareds/container/DateProvider/IDateProvider"
+import { inject, injectable } from "tsyringe";
 interface IRequest {
   carId: string;
   userId: string;
   expectedReturnDate: Date;
 }
 
+@injectable()
 class CreateRentalUseCase {
 
   constructor(
+    @inject('RentalRepository')
     private rentalRepository: IRentalRepository,
+
+    @inject('DataProvider')
     private dateProvider: IDateProvider
   ){}
 

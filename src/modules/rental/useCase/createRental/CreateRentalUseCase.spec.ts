@@ -1,3 +1,6 @@
+import "reflect-metadata"
+import "reflect-metadata"
+
 import { CreateRentalUseCase } from './CreateRentalUseCase'
 import { RentalRepositoryMock } from '../../repositories/implementations/mock/RentalRepositoryMock'
 import AppError from '../../../../shareds/appError/AppError';

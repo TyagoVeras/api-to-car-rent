@@ -90,11 +90,11 @@ model CarImages {
 model Rentals {
   id                   String   @id @default(uuid())
   start_date           DateTime
-  end_date             DateTime
+  end_date             DateTime?
   expected_return_date DateTime
-  total                Int
-  created_at           DateTime
-  updated_at           DateTime
+  total                Int?
+  created_at           DateTime?
+  updated_at           DateTime?
 
   car_id  String
   user_id String
