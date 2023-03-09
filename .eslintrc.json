@@ -25,4 +25,5 @@
         "no-use-before-define": "off",
         "no-undef": "off",
         "max-lines": ["error", 300]
+    }
 }

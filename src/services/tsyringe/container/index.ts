@@ -1,5 +1,5 @@
 import { container } from 'tsyringe';
-import '../../../shareds/container'
+import '../../../shareds/container';
 
 import { IUsersRepository } from '../../../modules/accounts/repositories/IUsersRepository';
 import { ICategoriesRepository } from '../../../modules/cars/repositories/ICategoryRepository';
@@ -31,15 +31,15 @@ container.registerSingleton<IUsersRepository>(
 
 container.registerSingleton<ICarsRepository>(
   'CarsRepository',
-  CarPostgresRepository
-)
+  CarPostgresRepository,
+);
 
 container.registerSingleton<IcarImageRepository>(
-  'CarImageRepository', 
-  CarImageRepository
-)
+  'CarImageRepository',
+  CarImageRepository,
+);
 
 container.registerSingleton<IRentalRepository>(
   'RentalRepository',
-  RentalRepositoryPostgresql
-)
+  RentalRepositoryPostgresql,
+);

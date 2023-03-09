@@ -5,8 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --exit-child --inspect --transpile-only --ignore-watch node_modules --respawn ./src/server.ts",
-    "test": "DATABASE_URL=postgresql://docker:docker@localhost:5432/rentx?schema=public jest"
-  },
+    "test": "DATABASE_URL=postgresql://docker:docker@localhost:5432/rentx?schema=public jest --runInBand"
+    },
   "dependencies": {
     "@prisma/client": "^4.6.1",
     "bcrypt": "^5.1.0",

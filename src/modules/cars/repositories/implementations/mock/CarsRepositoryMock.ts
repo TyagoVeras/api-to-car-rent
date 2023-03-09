@@ -5,7 +5,13 @@ class CarsRepositoryMock implements ICarsRepository{
 
     
     private cars: Cars[] = [];
-    
+    async updateAvailable(id: string, available: boolean): Promise<Cars | null> {
+        const carIndex = this.cars.findIndex(car => car.id === id);
+        this.cars[carIndex].available = available;
+        return this.cars[carIndex]
+    }
+
+
     async findAvailable({ brand, category_id, name}: IFindDTO): Promise<Cars[] | null> {
         return this.cars.filter((car) => {
             if(car.available === true || ((brand && car.brand === brand) || (category_id && car.category_id === category_id) || (name && car.name === name))){

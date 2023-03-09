@@ -4,6 +4,17 @@ import prisma from '../../../../../services/database/prismaClient';
 
 
 class CarPostgresRepository implements ICarsRepository {
+  async updateAvailable(id: string, available: boolean): Promise<Cars> {
+   return await prisma.cars.update({
+    data: {
+      available
+    },
+    where: {
+      id
+    }
+   })
+  }
+  
   async findById(id: string): Promise<Cars | null> {
     return await prisma.cars.findFirst({
       where: {
